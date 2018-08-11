@@ -6,8 +6,6 @@ void setup() {
   pinMode(dir_pin, OUTPUT);
   pinMode(step_pin, OUTPUT);
   Serial.begin(9600);
-
-  digitalWrite(dir_pin, LOW);
 }
 
 void loop() {
