@@ -1,5 +1,5 @@
 # hw-test-utils/pi
-Test utilities for Raspberry Pi. Cover PWM control, some network communication, serial ports,  and a **_very_** hardcoded stepper motor test script.
+Test utilities for Raspberry Pi. Covers PWM control, some network communication, serial ports (by way of [miniterm](https://pyserial.readthedocs.io/en/latest/tools.html#miniterm)),  and a **_very_** hardcoded stepper motor test script.
 
 ## Installation
 run `./installer/installer.sh` to create a virtual environment and install all dependencies. To uninstall, just run `rm -rf "$HOME/.hwtest/"`.
