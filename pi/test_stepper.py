@@ -1,8 +1,5 @@
 #!/usr/bin/env python3
-"""Simple CLI for stepping a stepper motor
-
-STEP PIN: 17
-DIR PIN:  18
+"""Simple CLI for testing a stepper motor
 
 author: Marion Anderson
 date:   2018-08-09
@@ -17,28 +14,25 @@ import pigpio
 
 
 @click.command()
-def main():
-    """Steps a stepper motor and can change the direction.
-    \b
-    Direction Pin: GP17
-    Stepper Pin: GP18
-    """
-    print('Starting test_stepper!')
+@click.option('--step-pin', default=17,
+              help='GPIO pin number connected to STEP on the driver')
+@click.option('--dir-pin', default=18,
+              help='GPIO pin number connected to DIRECTION on the driver')
+def main(step_pin, dir_pin):
+    """Steps a stepper motor and can change the direction."""
+    print('Starting steppertest!')
 
-    # Setup
-    dir_pin = 17
-    step_pin = 18
     pi = pigpio.pi()
     pi.set_mode(step_pin, pigpio.OUTPUT)
     pi.set_mode(dir_pin, pigpio.OUTPUT)
     pi.write(dir_pin, 1)
 
-    # Control
+    # control
     state = 1
     go = True
     while go:
         cmd = input('Press enter to step or \'-\' to switch direction: ')
-        # change direction
+        # Direction
         if cmd == '-':
             if state == 1:
                 pi.write(dir_pin, 0)
@@ -46,17 +40,17 @@ def main():
             else:
                 pi.write(dir_pin, 1)
                 state = 1
-            time.sleep((0.0000003))  # 200ns setup time
-
-        # exit
+        # Exiting
         elif cmd == 'q' or cmd == 'quit' or cmd == 'exit':
             go = False
-
-        # step motor
+        # Stepping
         pi.write(step_pin, 1)
-        time.sleep(0.0001)  # 1us minimum pulse width
+        time.sleep(0.005)
         pi.write(step_pin, 0)
-        time.sleep(0.0001)
+        time.sleep(0.005)
 
     # Shutdown
     pi.stop()
+
+if __name__ == '__main__':
+    main()
