@@ -18,13 +18,13 @@ import pigpio
               help='GPIO pin number connected to STEP on the driver')
 @click.option('--dir-pin', default=22,
               help='GPIO pin number connected to DIRECTION on the driver')
-@click.option('--step-angle', default=1.2,
+@click.option('--step-angle', default=1.8,
               help='Angle per step on stepper motor')
 @click.option('--start-angle', default=0,
               help='Current angular position of stepper')
 def main(step_pin, dir_pin, step_angle, start_angle):
     """Continuous interface to move a stepper motor to angular positions."""
-    # Setup 
+    # Setup
     print('Starting cmd_stepper.py!')
     pi = pigpio.pi()
     pi.set_mode(step_pin, pigpio.OUTPUT)
@@ -73,8 +73,8 @@ def main(step_pin, dir_pin, step_angle, start_angle):
         else:  # default case: just go in some direction for the right distance
             dist = abs(curpos - pos)
             cw = True if curpos > pos else False
-                
-        # Step motor 
+
+        # Step motor
         if cw:
             pi.write(dir_pin, 1)
         else:
