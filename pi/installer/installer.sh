@@ -38,7 +38,7 @@ echo "Checking for virtualenv..."
 sudo pip3 install virtualenv
 
 # activating virtualenv
-if ! [ -e "$HOME/.satcomm/bin/activate" ]; then
+if ! [ -e "$HOME/.hwtest/bin/activate" ]; then
   echo; echo "Creating virtual environment..."
   python3 -m venv "$HOME/.hwtest/"
 fi
@@ -51,6 +51,9 @@ echo; echo "Installing pyserial..."
 pip3 install pyserial --no-cache-dir
 echo; echo "Installing click..."
 pip3 install click --no-cache-dir
+echo; echo "Installing pigpio..."
+pip3 install pigpio --no-cache-dir
+
 
 # Cleanup
 # =======
@@ -58,6 +61,6 @@ deactivate
 echo
 echo "Installation Complete!"
 echo "Virtual environment stored in $HOME/.hwtest/bin/activate"
-echo; echo "To uninstall, run \'rm -rf $HOME/.hwtest\'"
+echo; echo "To uninstall, run 'rm -rf $HOME/.hwtest'"
 
 exit 0

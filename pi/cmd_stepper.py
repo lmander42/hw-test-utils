@@ -14,9 +14,9 @@ import pigpio
 
 
 @click.command()
-@click.option('--step-pin', default=17,
+@click.option('--step-pin', default=23,
               help='GPIO pin number connected to STEP on the driver')
-@click.option('--dir-pin', default=18,
+@click.option('--dir-pin', default=22,
               help='GPIO pin number connected to DIRECTION on the driver')
 @click.option('--step-angle', default=1.2,
               help='Angle per step on stepper motor')
