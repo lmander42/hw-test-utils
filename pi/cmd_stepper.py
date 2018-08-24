@@ -25,25 +25,29 @@ import pigpio
 def main(step_pin, dir_pin, step_angle, start_angle):
     """Continuous interface to move a stepper motor to angular positions."""
     # Setup
-    print('Starting cmd_stepper.py!')
     pi = pigpio.pi()
     pi.set_mode(step_pin, pigpio.OUTPUT)
     pi.set_mode(dir_pin, pigpio.OUTPUT)
     curpos = start_angle
+    print('Starting position: {0} deg'.format(curpos))
 
     go = True
     while go:
-        print('Current position: ', curpos)
         # Get desired position
-        pos = input('Enter an angular position: ')
+        # don't forget to validate data!
+        pos = input('> ')
         if pos in ('q', 'quit', 'exit'):
             go = False
             break
         try:
             pos = int(pos)
         except ValueError as e:
-            print('Bad position! Please enter an int or float')
+            print('Bad position! Please enter an int/float', end='')
+            print(' or \'q\' to exit')
             print(e)
+            continue
+        if abs(pos - curpos) < step_angle:
+            print('Distance too small to actuate. Skipping')
             continue
 
         # Decide direction by minimizing angular distance
@@ -74,13 +78,16 @@ def main(step_pin, dir_pin, step_angle, start_angle):
             dist = abs(curpos - pos)
             cw = True if curpos > pos else False
 
-        # Step motor
+        # Actuating
+        steps = int(dist / step_angle)
+        print('Steps moving', end='')
         if cw:
             pi.write(dir_pin, 1)
+            print(' cw', end='')
         else:
             pi.write(dir_pin, 0)
-        time.sleep(0.005)  # setup time
-        steps = int(dist / step_angle)
+            print(' ccw', end='')
+        print(' from {0} to {1}: {2}'.format(curpos, pos, steps))
         for i in range(steps):
             pi.write(step_pin, 1)
             time.sleep(0.005)
